@@ -1,0 +1,22 @@
+name: Compilar plugin
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extrair projeto
+        shell: pwsh
+        run: Expand-Archive -Path JohnXggWah.zip -DestinationPath . -Force
+      - name: Configurar
+        run: cmake -S JohnXggWah -B build -A x64
+      - name: Compilar
+        run: cmake --build build --config Release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: John-xgg-Fixed-Wah-VST3
+          path: build/JohnXggWah_artefacts/Release/VST3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: John-xgg-Fixed-Wah-Standalone
+          path: build/JohnXggWah_artefacts/Release/Standalone
